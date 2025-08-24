@@ -116,7 +116,7 @@ function setupMobileControls() {
         document.getElementById('speed-up').addEventListener('touchstart', (e) => {
             e.preventDefault();
             speedInterval = setInterval(() => {
-                if (snake.y > 50) snake.y -= 2;
+                if (snake.y > 10) snake.y -= 2;
             }, 50);
         });
         
@@ -156,7 +156,7 @@ function handleGameInput(keyCode) {
             break;
         case 'ArrowLeft':
         case 'KeyA':
-            if (snake.y > 50) snake.y -= 2;
+            if (snake.y > 10) snake.y -= 2;
             break;
         case 'ArrowRight':
         case 'KeyD':
@@ -340,12 +340,13 @@ function updateSnake() {
     const currentSpeed = snake.isBoosting ? SNAKE_BOOST_SPEED : snake.speed;
     
     // Auto-move snake forward slightly
-    if (snake.y > 50) {
+    if (snake.y > 10) {
         snake.y -= currentSpeed * 0.3;
     }
     
     // Check if snake reached the top (level completion)
     if (snake.y <= 10) {
+        console.log('Snake reached top! Completing level:', level);
         completeLevel();
     }
 }
