@@ -1,0 +1,23 @@
+{
+  "name": "snake-chase-game",
+  "version": "1.0.0",
+  "description": "A retro-style Snake Chase game",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site deployed'"
+  },
+  "keywords": [
+    "game",
+    "snake",
+    "retro",
+    "html5"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "express": "^5.1.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
