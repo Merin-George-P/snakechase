@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Snake Chase - 3 Lane Road</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Game Header -->
+        <div class="game-header">
+            <h1 class="game-title">SNAKE CHASE</h1>
+            <div class="score-display">
+                <span>SCORE: <span id="score">0</span></span>
+                <span>HIGH: <span id="high-score">0</span></span>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <div class="canvas-container">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <!-- Game UI Overlays -->
+            <div class="game-overlay" id="start-screen">
+                <div class="overlay-content">
+                    <h2>SNAKE CHASE</h2>
+                    <p>Chase the mouse across the 3-lane road!</p>
+                    <p>Avoid obstacles and catch mice to score!</p>
+                    <div class="controls-info">
+                        <p><strong>CONTROLS:</strong></p>
+                        <p>↑↓ or W/S - Change Lanes</p>
+                        <p>←→ or A/D - Speed Up/Down</p>
+                        <p>SPACE - Boost</p>
+                    </div>
+                    <button class="start-btn" onclick="startGame()">START GAME</button>
+                </div>
+            </div>
+
+            <div class="game-overlay" id="game-over-screen" style="display: none;">
+                <div class="overlay-content">
+                    <h2>GAME OVER</h2>
+                    <p>Your Score: <span id="final-score">0</span></p>
+                    <p id="new-high-score" style="display: none;">NEW HIGH SCORE!</p>
+                    <button class="start-btn" onclick="restartGame()">PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <div class="game-overlay" id="pause-screen" style="display: none;">
+                <div class="overlay-content">
+                    <h2>PAUSED</h2>
+                    <p>Press P to resume</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="mobile-controls" id="mobile-controls">
+            <div class="control-row">
+                <button class="control-btn" id="lane-up">↑</button>
+            </div>
+            <div class="control-row">
+                <button class="control-btn" id="slow-down">←</button>
+                <button class="control-btn" id="boost">BOOST</button>
+                <button class="control-btn" id="speed-up">→</button>
+            </div>
+            <div class="control-row">
+                <button class="control-btn" id="lane-down">↓</button>
+            </div>
+        </div>
+
+        <!-- Sound Toggle -->
+        <div class="sound-toggle">
+            <button id="sound-btn" onclick="toggleSound()">🔊</button>
+        </div>
+
+        <!-- Game Info -->
+        <div class="game-info">
+            <p>Use arrow keys or WASD to control your snake. Catch mice and avoid obstacles!</p>
+        </div>
+    </div>
+
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
