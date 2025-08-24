@@ -15,6 +15,7 @@
         <div class="game-header">
             <h1 class="game-title">SNAKE CHASE</h1>
             <div class="score-display">
+                <span>LEVEL: <span id="level">1</span></span>
                 <span>SCORE: <span id="score">0</span></span>
                 <span>HIGH: <span id="high-score">0</span></span>
             </div>
@@ -28,8 +29,9 @@
             <div class="game-overlay" id="start-screen">
                 <div class="overlay-content">
                     <h2>SNAKE CHASE</h2>
-                    <p>Chase the mouse across the 3-lane road!</p>
+                    <p>Chase mice and reach the top to advance levels!</p>
                     <p>Avoid obstacles and catch mice to score!</p>
+                    <p>Higher levels = faster speed + more obstacles!</p>
                     <div class="controls-info">
                         <p><strong>CONTROLS:</strong></p>
                         <p>↑↓ or W/S - Change Lanes</p>
@@ -53,6 +55,16 @@
                 <div class="overlay-content">
                     <h2>PAUSED</h2>
                     <p>Press P to resume</p>
+                </div>
+            </div>
+
+            <div class="game-overlay" id="level-complete-screen" style="display: none;">
+                <div class="overlay-content">
+                    <h2>LEVEL COMPLETE!</h2>
+                    <p>You reached the top!</p>
+                    <p>Level: <span id="completed-level">1</span></p>
+                    <p>Score: <span id="level-score">0</span></p>
+                    <button class="start-btn" onclick="nextLevel()">NEXT LEVEL</button>
                 </div>
             </div>
         </div>

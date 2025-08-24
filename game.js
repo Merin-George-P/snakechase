@@ -3,8 +3,9 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Game State
-let gameState = 'start'; // 'start', 'playing', 'paused', 'gameOver'
+let gameState = 'start'; // 'start', 'playing', 'paused', 'gameOver', 'levelComplete'
 let score = 0;
+let level = 1;
 let highScore = localStorage.getItem('snakeChaseHighScore') || 0;
 let animationId;
 
@@ -67,8 +68,9 @@ let particles = [];
 let keys = {};
 let lastTime = 0;
 
-// Initialize high score display
+// Initialize high score and level display
 document.getElementById('high-score').textContent = highScore;
+document.getElementById('level').textContent = 1;
 
 // Event Listeners
 document.addEventListener('keydown', (e) => {
@@ -192,9 +194,11 @@ function activateBoost() {
 function startGame() {
     gameState = 'playing';
     score = 0;
+    level = 1;
     document.getElementById('score').textContent = score;
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
+    document.getElementById('level-complete-screen').style.display = 'none';
     
     // Reset game objects
     resetGameObjects();
@@ -224,6 +228,38 @@ function resumeGame() {
     }
 }
 
+function completeLevel() {
+    gameState = 'levelComplete';
+    
+    // Add level completion bonus
+    const levelBonus = level * 50;
+    score += levelBonus;
+    document.getElementById('score').textContent = score;
+    
+    // Update level complete screen
+    document.getElementById('completed-level').textContent = level;
+    document.getElementById('level-score').textContent = score;
+    document.getElementById('level-complete-screen').style.display = 'flex';
+    
+    stopBackgroundMusic();
+    playSound('catch'); // Use catch sound for level complete
+    
+    // Create celebration particles at snake position
+    createParticles(snake.x + snake.size / 2, snake.y + snake.size / 2, '#00ff00');
+}
+
+function nextLevel() {
+    level++;
+    document.getElementById('level').textContent = level;
+    document.getElementById('level-complete-screen').style.display = 'none';
+    
+    // Reset game objects with increased difficulty
+    resetGameObjects();
+    
+    gameState = 'playing';
+    playBackgroundMusic();
+}
+
 function gameOver() {
     gameState = 'gameOver';
     document.getElementById('final-score').textContent = score;
@@ -249,7 +285,7 @@ function resetGameObjects() {
     snake.y = CANVAS_HEIGHT - 80;
     snake.lane = 1;
     snake.targetLane = 1;
-    snake.speed = SNAKE_SPEED;
+    snake.speed = SNAKE_SPEED + (level - 1) * 0.5; // Increase speed with level
     snake.isBoosting = false;
     snake.boostCooldown = 0;
     
@@ -259,6 +295,7 @@ function resetGameObjects() {
     mouse.lane = 0;
     mouse.direction = 1;
     mouse.changeDirectionTimer = 0;
+    mouse.speed = MOUSE_SPEED + (level - 1) * 0.3; // Increase mouse speed
     
     // Clear obstacles and particles
     obstacles = [];
@@ -266,7 +303,7 @@ function resetGameObjects() {
 }
 
 function gameLoop(currentTime = 0) {
-    if (gameState !== 'playing') return;
+    if (gameState !== 'playing' && gameState !== 'levelComplete') return;
     
     const deltaTime = currentTime - lastTime;
     lastTime = currentTime;
@@ -305,6 +342,11 @@ function updateSnake() {
     // Auto-move snake forward slightly
     if (snake.y > 50) {
         snake.y -= currentSpeed * 0.3;
+    }
+    
+    // Check if snake reached the top (level completion)
+    if (snake.y <= 10) {
+        completeLevel();
     }
 }
 
@@ -351,8 +393,9 @@ function updateMouse() {
 }
 
 function updateObstacles() {
-    // Spawn new obstacles
-    if (Math.random() < 0.02) { // 2% chance per frame
+    // Spawn new obstacles (increase spawn rate with level)
+    const spawnRate = 0.02 + (level - 1) * 0.005; // Increase spawn rate with level
+    if (Math.random() < spawnRate) {
         const lane = Math.floor(Math.random() * LANE_COUNT);
         obstacles.push({
             x: lane * LANE_WIDTH + LANE_WIDTH / 2 - OBSTACLE_WIDTH / 2,
