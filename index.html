@@ -44,7 +44,7 @@
 
             <div class="game-overlay" id="game-over-screen" style="display: none;">
                 <div class="overlay-content">
-                    <h2>GAME OVER</h2>
+                    <h2 id="game-over-title">GAME OVER</h2>
                     <p>Your Score: <span id="final-score">0</span></p>
                     <p id="new-high-score" style="display: none;">NEW HIGH SCORE!</p>
                     <button class="start-btn" onclick="restartGame()">PLAY AGAIN</button>
@@ -58,15 +58,6 @@
                 </div>
             </div>
 
-            <div class="game-overlay" id="level-complete-screen" style="display: none;">
-                <div class="overlay-content">
-                    <h2>LEVEL COMPLETE!</h2>
-                    <p>You reached the top!</p>
-                    <p>Level: <span id="completed-level">1</span></p>
-                    <p>Score: <span id="level-score">0</span></p>
-                    <button class="start-btn" onclick="nextLevel()">NEXT LEVEL</button>
-                </div>
-            </div>
         </div>
 
         <!-- Mobile Controls -->

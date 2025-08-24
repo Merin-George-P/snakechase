@@ -198,7 +198,6 @@ function startGame() {
     document.getElementById('score').textContent = score;
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
-    document.getElementById('level-complete-screen').style.display = 'none';
     
     // Reset game objects
     resetGameObjects();
@@ -229,18 +228,27 @@ function resumeGame() {
 }
 
 function completeLevel() {
-    gameState = 'levelComplete';
+    gameState = 'gameOver';
     
     // Add level completion bonus
     const levelBonus = level * 50;
     score += levelBonus;
     document.getElementById('score').textContent = score;
     
-    // Update level complete screen
-    document.getElementById('completed-level').textContent = level;
-    document.getElementById('level-score').textContent = score;
-    document.getElementById('level-complete-screen').style.display = 'flex';
+    // Show game over screen instead of level complete
+    document.getElementById('final-score').textContent = score;
     
+    // Check for high score
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('snakeChaseHighScore', highScore);
+        document.getElementById('high-score').textContent = highScore;
+        document.getElementById('new-high-score').style.display = 'block';
+    } else {
+        document.getElementById('new-high-score').style.display = 'none';
+    }
+    
+    document.getElementById('game-over-screen').style.display = 'flex';
     stopBackgroundMusic();
     playSound('catch'); // Use catch sound for level complete
     
@@ -248,17 +256,6 @@ function completeLevel() {
     createParticles(snake.x + snake.size / 2, snake.y + snake.size / 2, '#00ff00');
 }
 
-function nextLevel() {
-    level++;
-    document.getElementById('level').textContent = level;
-    document.getElementById('level-complete-screen').style.display = 'none';
-    
-    // Reset game objects with increased difficulty
-    resetGameObjects();
-    
-    gameState = 'playing';
-    playBackgroundMusic();
-}
 
 function gameOver() {
     gameState = 'gameOver';
@@ -303,7 +300,7 @@ function resetGameObjects() {
 }
 
 function gameLoop(currentTime = 0) {
-    if (gameState !== 'playing' && gameState !== 'levelComplete') return;
+    if (gameState !== 'playing') return;
     
     const deltaTime = currentTime - lastTime;
     lastTime = currentTime;
